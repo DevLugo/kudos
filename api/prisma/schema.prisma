@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestgraphql {
+  provider               = "node ../node_modules/prisma-nestjs-graphql"
+  output                 = "../src/@generated/prisma-nestjs-graphql"
+  fields_Validator_from  = "class-validator"
+  fields_Validator_input = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Kudo {
+  id        String   @id @default(uuid())
+  /// @HideField({ output: false, input: true })
+  message   String
+  /// @HideField({ output: false, input: true })
+  createdAt DateTime @default(now())
+  /// @HideField({ output: false, input: true })
+  updatedAt DateTime @updatedAt
+  from      String
+  to        String
+  User_from User     @relation("Kudos_userFrom", fields: [from], references: [id])
+  User_to   User     @relation("Kudos_userTo", fields: [to], references: [id])
+}
+
+model AsignedKudo {
+  id        String             @id @default(uuid())
+  /// @HideField({ output: false, input: true })
+  createdAt DateTime           @default(now())
+  /// @HideField({ output: false, input: true })
+  updatedAt DateTime           @updatedAt
+  status    AsignedKudosStatus
+  from      String
+  to        String
+  userFromR User               @relation("AsignedKudos_userFrom", fields: [from], references: [id])
+  userToR   User               @relation("AsignedKudos_userTo", fields: [to], references: [id])
+}
+
+model User {
+  id               String        @id @default(uuid())
+  /// @FieldType({ name: 'Scalars.GraphQLEmailAddress', from: 'graphql-scalars', input: true })
+  email            String        @unique
+  /// @HideField({ output: false, input: true })
+  firstName        String
+  lastName         String
+  password         String
+  /// @HideField({ output: false, input: true })
+  /// @HideField({ output: false, input: true })
+  createdAt        DateTime      @default(now())
+  /// @HideField({ output: false, input: true })
+  updatedAt        DateTime      @updatedAt
+  organization     Organization? @relation(fields: [organizationId], references: [id])
+  organizationId   String?
+  KudosFrom        Kudo[]        @relation("Kudos_userFrom")
+  KudosTo          Kudo[]        @relation("Kudos_userTo")
+  AsignedKudosFrom AsignedKudo[] @relation("AsignedKudos_userFrom")
+  AsignedKudosTo   AsignedKudo[] @relation("AsignedKudos_userTo")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  /// @HideField({ output: false, input: true })
+  name      String
+  /// @HideField({ output: false, input: true })
+  createdAt DateTime @default(now())
+  /// @HideField({ output: false, input: true })
+  updatedAt DateTime @updatedAt
+  users     User[]
+}
+
+enum AsignedKudosStatus {
+  PENDING
+  SENT
+}

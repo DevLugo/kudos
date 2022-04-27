@@ -1,0 +1,347 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type OrganizationCount {
+  users: Int!
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  users: [User!]
+  _count: OrganizationCount!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Kudo {
+  id: ID!
+  message: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  from: String!
+  to: String!
+  User_from: User!
+  User_to: User!
+}
+
+type UserCount {
+  KudosFrom: Int!
+  KudosTo: Int!
+  AsignedKudosFrom: Int!
+  AsignedKudosTo: Int!
+}
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  organization: Organization
+  organizationId: String
+  KudosFrom: [Kudo!]
+  KudosTo: [Kudo!]
+  AsignedKudosFrom: [AsignedKudo!]
+  AsignedKudosTo: [AsignedKudo!]
+  _count: UserCount!
+}
+
+type AsignedKudo {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: AsignedKudosStatus!
+  from: String!
+  to: String!
+  userFromR: User!
+  userToR: User!
+}
+
+enum AsignedKudosStatus {
+  PENDING
+  SENT
+}
+
+type SignInOutput {
+  token: String!
+  user: User!
+}
+
+type Query {
+  getReceivedKudos: [Kudo!]!
+  getAsignedKudos: [AsignedKudo!]!
+}
+
+type Mutation {
+  createKudo(input: KudoCreateInput!): Kudo!
+  signUp(input: UserCreateInput!): User!
+  signIn(input: SignInInput!): SignInOutput!
+}
+
+input KudoCreateInput {
+  id: String
+  User_to: UserCreateNestedOneWithoutKudosToInput!
+}
+
+input UserCreateNestedOneWithoutKudosToInput {
+  create: UserCreateWithoutKudosToInput
+  connectOrCreate: UserCreateOrConnectWithoutKudosToInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutKudosToInput {
+  id: String
+  email: EmailAddress!
+  lastName: String!
+  password: String!
+  organization: OrganizationCreateNestedOneWithoutUsersInput
+  KudosFrom: KudoCreateNestedManyWithoutUser_fromInput
+  AsignedKudosFrom: AsignedKudoCreateNestedManyWithoutUserFromRInput
+  AsignedKudosTo: AsignedKudoCreateNestedManyWithoutUserToRInput
+}
+
+"""
+A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+"""
+scalar EmailAddress @specifiedBy(url: "https://www.w3.org/Protocols/rfc822/")
+
+input OrganizationCreateNestedOneWithoutUsersInput {
+  create: OrganizationCreateWithoutUsersInput
+  connectOrCreate: OrganizationCreateOrConnectWithoutUsersInput
+  connect: OrganizationWhereUniqueInput
+}
+
+input OrganizationCreateWithoutUsersInput {
+  id: String
+}
+
+input OrganizationCreateOrConnectWithoutUsersInput {
+  where: OrganizationWhereUniqueInput!
+  create: OrganizationCreateWithoutUsersInput!
+}
+
+input OrganizationWhereUniqueInput {
+  id: String
+}
+
+input KudoCreateNestedManyWithoutUser_fromInput {
+  create: [KudoCreateWithoutUser_fromInput!]
+  connectOrCreate: [KudoCreateOrConnectWithoutUser_fromInput!]
+  createMany: KudoCreateManyUser_fromInputEnvelope
+  connect: [KudoWhereUniqueInput!]
+}
+
+input KudoCreateWithoutUser_fromInput {
+  id: String
+  User_to: UserCreateNestedOneWithoutKudosToInput!
+}
+
+input KudoCreateOrConnectWithoutUser_fromInput {
+  where: KudoWhereUniqueInput!
+  create: KudoCreateWithoutUser_fromInput!
+}
+
+input KudoWhereUniqueInput {
+  id: String
+}
+
+input KudoCreateManyUser_fromInputEnvelope {
+  data: [KudoCreateManyUser_fromInput!]!
+  skipDuplicates: Boolean
+}
+
+input KudoCreateManyUser_fromInput {
+  id: String
+  to: String!
+}
+
+input AsignedKudoCreateNestedManyWithoutUserFromRInput {
+  create: [AsignedKudoCreateWithoutUserFromRInput!]
+  connectOrCreate: [AsignedKudoCreateOrConnectWithoutUserFromRInput!]
+  createMany: AsignedKudoCreateManyUserFromRInputEnvelope
+  connect: [AsignedKudoWhereUniqueInput!]
+}
+
+input AsignedKudoCreateWithoutUserFromRInput {
+  id: String
+  status: AsignedKudosStatus!
+  userToR: UserCreateNestedOneWithoutAsignedKudosToInput!
+}
+
+input UserCreateNestedOneWithoutAsignedKudosToInput {
+  create: UserCreateWithoutAsignedKudosToInput
+  connectOrCreate: UserCreateOrConnectWithoutAsignedKudosToInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutAsignedKudosToInput {
+  id: String
+  email: EmailAddress!
+  lastName: String!
+  password: String!
+  organization: OrganizationCreateNestedOneWithoutUsersInput
+  KudosFrom: KudoCreateNestedManyWithoutUser_fromInput
+  KudosTo: KudoCreateNestedManyWithoutUser_toInput
+  AsignedKudosFrom: AsignedKudoCreateNestedManyWithoutUserFromRInput
+}
+
+input KudoCreateNestedManyWithoutUser_toInput {
+  create: [KudoCreateWithoutUser_toInput!]
+  connectOrCreate: [KudoCreateOrConnectWithoutUser_toInput!]
+  createMany: KudoCreateManyUser_toInputEnvelope
+  connect: [KudoWhereUniqueInput!]
+}
+
+input KudoCreateWithoutUser_toInput {
+  id: String
+  User_from: UserCreateNestedOneWithoutKudosFromInput!
+}
+
+input UserCreateNestedOneWithoutKudosFromInput {
+  create: UserCreateWithoutKudosFromInput
+  connectOrCreate: UserCreateOrConnectWithoutKudosFromInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutKudosFromInput {
+  id: String
+  email: EmailAddress!
+  lastName: String!
+  password: String!
+  organization: OrganizationCreateNestedOneWithoutUsersInput
+  KudosTo: KudoCreateNestedManyWithoutUser_toInput
+  AsignedKudosFrom: AsignedKudoCreateNestedManyWithoutUserFromRInput
+  AsignedKudosTo: AsignedKudoCreateNestedManyWithoutUserToRInput
+}
+
+input AsignedKudoCreateNestedManyWithoutUserToRInput {
+  create: [AsignedKudoCreateWithoutUserToRInput!]
+  connectOrCreate: [AsignedKudoCreateOrConnectWithoutUserToRInput!]
+  createMany: AsignedKudoCreateManyUserToRInputEnvelope
+  connect: [AsignedKudoWhereUniqueInput!]
+}
+
+input AsignedKudoCreateWithoutUserToRInput {
+  id: String
+  status: AsignedKudosStatus!
+  userFromR: UserCreateNestedOneWithoutAsignedKudosFromInput!
+}
+
+input UserCreateNestedOneWithoutAsignedKudosFromInput {
+  create: UserCreateWithoutAsignedKudosFromInput
+  connectOrCreate: UserCreateOrConnectWithoutAsignedKudosFromInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutAsignedKudosFromInput {
+  id: String
+  email: EmailAddress!
+  lastName: String!
+  password: String!
+  organization: OrganizationCreateNestedOneWithoutUsersInput
+  KudosFrom: KudoCreateNestedManyWithoutUser_fromInput
+  KudosTo: KudoCreateNestedManyWithoutUser_toInput
+  AsignedKudosTo: AsignedKudoCreateNestedManyWithoutUserToRInput
+}
+
+input UserCreateOrConnectWithoutAsignedKudosFromInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutAsignedKudosFromInput!
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: EmailAddress
+}
+
+input AsignedKudoCreateOrConnectWithoutUserToRInput {
+  where: AsignedKudoWhereUniqueInput!
+  create: AsignedKudoCreateWithoutUserToRInput!
+}
+
+input AsignedKudoWhereUniqueInput {
+  id: String
+}
+
+input AsignedKudoCreateManyUserToRInputEnvelope {
+  data: [AsignedKudoCreateManyUserToRInput!]!
+  skipDuplicates: Boolean
+}
+
+input AsignedKudoCreateManyUserToRInput {
+  id: String
+  status: AsignedKudosStatus!
+  from: String!
+}
+
+input UserCreateOrConnectWithoutKudosFromInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutKudosFromInput!
+}
+
+input KudoCreateOrConnectWithoutUser_toInput {
+  where: KudoWhereUniqueInput!
+  create: KudoCreateWithoutUser_toInput!
+}
+
+input KudoCreateManyUser_toInputEnvelope {
+  data: [KudoCreateManyUser_toInput!]!
+  skipDuplicates: Boolean
+}
+
+input KudoCreateManyUser_toInput {
+  id: String
+  from: String!
+}
+
+input UserCreateOrConnectWithoutAsignedKudosToInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutAsignedKudosToInput!
+}
+
+input AsignedKudoCreateOrConnectWithoutUserFromRInput {
+  where: AsignedKudoWhereUniqueInput!
+  create: AsignedKudoCreateWithoutUserFromRInput!
+}
+
+input AsignedKudoCreateManyUserFromRInputEnvelope {
+  data: [AsignedKudoCreateManyUserFromRInput!]!
+  skipDuplicates: Boolean
+}
+
+input AsignedKudoCreateManyUserFromRInput {
+  id: String
+  status: AsignedKudosStatus!
+  to: String!
+}
+
+input UserCreateOrConnectWithoutKudosToInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutKudosToInput!
+}
+
+input UserCreateInput {
+  id: String
+  email: EmailAddress!
+  lastName: String!
+  password: String!
+  organization: OrganizationCreateNestedOneWithoutUsersInput
+  KudosFrom: KudoCreateNestedManyWithoutUser_fromInput
+  KudosTo: KudoCreateNestedManyWithoutUser_toInput
+  AsignedKudosFrom: AsignedKudoCreateNestedManyWithoutUserFromRInput
+  AsignedKudosTo: AsignedKudoCreateNestedManyWithoutUserToRInput
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
