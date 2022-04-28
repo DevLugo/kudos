@@ -8,7 +8,7 @@ export class KudoMinAggregateInput {
     @Field(() => Boolean, {nullable:true})
     id?: true;
 
-    @HideField()
+    @Field(() => Boolean, {nullable:true})
     message?: true;
 
     @HideField()

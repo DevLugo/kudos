@@ -8,7 +8,7 @@ import { UserCreateNestedOneWithoutAsignedKudosToInput } from '../user/user-crea
 @InputType()
 export class AsignedKudoCreateInput {
 
-    @Field(() => String, {nullable:true})
+    @HideField()
     id?: string;
 
     @HideField()

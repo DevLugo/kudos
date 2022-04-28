@@ -76,11 +76,13 @@ export interface AsignedKudoWhereUniqueInput {
 
 export interface KudoCreateInput {
   id?: string | null;
+  message: string;
   User_to: UserCreateNestedOneWithoutKudosToInput;
 }
 
 export interface KudoCreateManyUser_fromInput {
   id?: string | null;
+  message: string;
   to: string;
 }
 
@@ -91,6 +93,7 @@ export interface KudoCreateManyUser_fromInputEnvelope {
 
 export interface KudoCreateManyUser_toInput {
   id?: string | null;
+  message: string;
   from: string;
 }
 
@@ -125,11 +128,13 @@ export interface KudoCreateOrConnectWithoutUser_toInput {
 
 export interface KudoCreateWithoutUser_fromInput {
   id?: string | null;
+  message: string;
   User_to: UserCreateNestedOneWithoutKudosToInput;
 }
 
 export interface KudoCreateWithoutUser_toInput {
   id?: string | null;
+  message: string;
   User_from: UserCreateNestedOneWithoutKudosFromInput;
 }
 
@@ -162,7 +167,6 @@ export interface SignInInput {
 }
 
 export interface UserCreateInput {
-  id?: string | null;
   email: any;
   lastName: string;
   password: string;

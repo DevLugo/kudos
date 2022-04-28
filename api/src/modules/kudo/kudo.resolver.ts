@@ -34,13 +34,11 @@ export class KudoResolver {
         @Args({ name: 'input', type: () => KudoCreateInput})
         data: KudoCreateInput
     ){
-        return await this._kudoService.sendKudo({
-            User_from: {
-                connect:{
-                    id:user.id
-                }
-            },
-            ...data
-        })
+        return await this._kudoService.sendKudo(
+            data.id,
+            data.message,
+            user.id,
+            data.User_to.connect.id
+            );
     }
 }

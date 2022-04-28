@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 async function main() {
     const salt = await genSalt(10);
-    const password = await hash("test1234", salt);
+    const password = await hash("1234", salt);
     const amountOrganizations = 3
     const organizations: OrganizationCreateManyInput[] = [...Array(amountOrganizations)].map((_, i) => {
         return {
@@ -19,53 +19,62 @@ async function main() {
     await prisma.organization.createMany({
         data: organizations,
     });
-    console.log(faker.random.number(amountOrganizations))
-    const createUsers = [...Array(100)].map((_, i) =>
-        prisma.user.create({
-            data:  {
-                    id: String(i),
-                    firstName: faker.name.findName(),
-                    lastName: faker.name.lastName(),
-                    email: `test${i}@test.com`,
-                    password: password,
-                    organization: {
-                        connect:{
-                            id: String(faker.random.number(amountOrganizations-1))
-                        }
-                    }
-                }
-        })
-    );
-
-    await prisma.$transaction(createUsers);
-
+    
     // retrieve origanizations
     const organizationsDb = await prisma.organization.findMany();
+    console.log("DB ORGANIZATIONS",organizationsDb);
     let transactionsKudosToAsign = []
+/*     await Promise.all(organizationsDb.map(async org => {
+ */    
+    for await(const org of organizationsDb) {
+        const createUsers = [...Array(100)].map((_, i) =>
+            prisma.user.create({
+                data:  {
+                        firstName: faker.name.findName(),
+                        lastName: faker.name.lastName(),
+                        email: `test${String(org.id)}_${String(i)}@test.com`,
+                        password: password,
+                        organization: {
+                            connect:{
+                                id: org.id
+                            }
+                        }
+                    }
+            })
+        );
+        await prisma.$transaction(createUsers);
 
-    for(const org of organizationsDb){
         const users = await prisma.user.findMany({
             where:{
                 organizationId: org.id
             }
         });
-
-        for(const user of users){
+        console.log("TOTAL USUARIOS: ",users.length)
+        try {
+            
+        
+        for await(const user of users){
             const fromId = user.id;
-            const toList = faker.random.arrayElements(users.filter(u => u.id === fromId),3);
-            const currentKudosToAsign = prisma.asignedKudo.createMany({
-                data: toList.map(to => {
-                    return {
-                        from: fromId,
-                        to: to.id,
-                        status: AsignedKudosStatus.PENDING
-                    }
-                })
-            })
-            transactionsKudosToAsign = [...transactionsKudosToAsign, currentKudosToAsign]
+            const toList = faker.random.arrayElements(users.filter(u => u.id !== fromId),3);
+
+            for (const to of toList){
+                transactionsKudosToAsign.push(
+                    prisma.asignedKudo.create({
+                        data: {
+                            from: fromId,
+                            to: to.id,
+                            status: AsignedKudosStatus.PENDING
+                        }
+                    })
+                ) 
+            }
         }
+        await prisma.$transaction(transactionsKudosToAsign);
+    } catch (error) {
+            console.log(error);
     }
-    prisma.$transaction(transactionsKudosToAsign);
+    /* } */
+    }
 }
 
 main()

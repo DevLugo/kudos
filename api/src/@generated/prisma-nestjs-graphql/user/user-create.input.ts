@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import * as Scalars from 'graphql-scalars';
 import { HideField } from '@nestjs/graphql';
+import * as Scalars from 'graphql-scalars';
 import { OrganizationCreateNestedOneWithoutUsersInput } from '../organization/organization-create-nested-one-without-users.input';
 import { KudoCreateNestedManyWithoutUser_fromInput } from '../kudo/kudo-create-nested-many-without-user-from.input';
 import { KudoCreateNestedManyWithoutUser_toInput } from '../kudo/kudo-create-nested-many-without-user-to.input';
@@ -11,7 +11,7 @@ import { AsignedKudoCreateNestedManyWithoutUserToRInput } from '../asigned-kudo/
 @InputType()
 export class UserCreateInput {
 
-    @Field(() => String, {nullable:true})
+    @HideField()
     id?: string;
 
     @Field(() => Scalars.GraphQLEmailAddress, {nullable:false})

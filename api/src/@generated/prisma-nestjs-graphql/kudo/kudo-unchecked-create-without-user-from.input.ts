@@ -8,7 +8,7 @@ export class KudoUncheckedCreateWithoutUser_fromInput {
     @Field(() => String, {nullable:true})
     id?: string;
 
-    @HideField()
+    @Field(() => String, {nullable:false})
     message!: string;
 
     @HideField()

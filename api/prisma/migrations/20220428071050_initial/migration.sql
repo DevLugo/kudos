@@ -1,9 +1,6 @@
 -- CreateEnum
 CREATE TYPE "AsignedKudosStatus" AS ENUM ('PENDING', 'SENT');
 
--- DropEnum
-DROP TYPE "InteractionType";
-
 -- CreateTable
 CREATE TABLE "Kudo" (
     "id" TEXT NOT NULL,

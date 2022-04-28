@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
-import { kudoFields } from "../fragments";
+import { AsignedKudoFields, kudoFields } from "../fragments";
 
 export const ASIGNED_KUDOS = gql`
     query getAsignedKudos{
         getAsignedKudos{
-            ...kudoFields
+            ...AsignedKudoFields
         }
     }
-    ${kudoFields}
+    ${AsignedKudoFields}
 `
 
 export const RECEIVED_KUDOS = gql`

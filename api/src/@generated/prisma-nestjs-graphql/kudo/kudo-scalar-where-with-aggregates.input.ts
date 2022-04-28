@@ -1,8 +1,8 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
-import { HideField } from '@nestjs/graphql';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
+import { HideField } from '@nestjs/graphql';
 
 @InputType()
 export class KudoScalarWhereWithAggregatesInput {
@@ -19,7 +19,7 @@ export class KudoScalarWhereWithAggregatesInput {
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     id?: StringWithAggregatesFilter;
 
-    @HideField()
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
     message?: StringWithAggregatesFilter;
 
     @HideField()

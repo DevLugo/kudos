@@ -4,7 +4,7 @@ import { RootState } from ".";
 import { SIGN_IN } from "../graphql/mutations"
 import client from '../clients/apolloClient';
 import { resetToken, setToken } from "../utils";
-import { signIn, signInVariables, signIn_signIn, signIn_signIn_user } from "../graphql/mutations/__generated__/signIn";
+import { signIn, signInVariables, signIn_signIn, signIn_signIn_user } from "../__generated__/signIn";
 
 export interface IAuthState {
     token?: string;

@@ -89,6 +89,7 @@ type Mutation {
 
 input KudoCreateInput {
   id: String
+  message: String!
   User_to: UserCreateNestedOneWithoutKudosToInput!
 }
 
@@ -142,6 +143,7 @@ input KudoCreateNestedManyWithoutUser_fromInput {
 
 input KudoCreateWithoutUser_fromInput {
   id: String
+  message: String!
   User_to: UserCreateNestedOneWithoutKudosToInput!
 }
 
@@ -161,6 +163,7 @@ input KudoCreateManyUser_fromInputEnvelope {
 
 input KudoCreateManyUser_fromInput {
   id: String
+  message: String!
   to: String!
 }
 
@@ -203,6 +206,7 @@ input KudoCreateNestedManyWithoutUser_toInput {
 
 input KudoCreateWithoutUser_toInput {
   id: String
+  message: String!
   User_from: UserCreateNestedOneWithoutKudosFromInput!
 }
 
@@ -300,6 +304,7 @@ input KudoCreateManyUser_toInputEnvelope {
 
 input KudoCreateManyUser_toInput {
   id: String
+  message: String!
   from: String!
 }
 
@@ -330,7 +335,6 @@ input UserCreateOrConnectWithoutKudosToInput {
 }
 
 input UserCreateInput {
-  id: String
   email: EmailAddress!
   lastName: String!
   password: String!

@@ -10,7 +10,7 @@ export class KudoOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     id?: keyof typeof SortOrder;
 
-    @HideField()
+    @Field(() => SortOrder, {nullable:true})
     message?: keyof typeof SortOrder;
 
     @HideField()

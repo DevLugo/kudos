@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { userFields } from "../fragments";
 
-export const CREATE_BORROWER = gql`
+export const SEND_KUDO = gql`
     mutation createKudo(
         $input: KudoCreateInput!
     ){
@@ -19,4 +19,4 @@ export const CREATE_BORROWER = gql`
         }
     }
 ${userFields}
-`
+`;

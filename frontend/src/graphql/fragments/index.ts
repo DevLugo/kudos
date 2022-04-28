@@ -24,3 +24,19 @@ export const kudoFields = gql`
   }
   ${userFields}
 `;
+
+export const AsignedKudoFields = gql`
+  fragment AsignedKudoFields on AsignedKudo {
+    id
+    createdAt
+    updatedAt
+    status
+    userFromR{
+      ...userFields
+    }
+    userToR{
+      ...userFields
+    }
+  }
+  ${userFields}
+`;

@@ -7,10 +7,10 @@ import { UserCreateNestedOneWithoutKudosToInput } from '../user/user-create-nest
 @InputType()
 export class KudoCreateInput {
 
-    @Field(() => String, {nullable:true})
+    @HideField()
     id?: string;
 
-    @HideField()
+    @Field(() => String, {nullable:false})
     message!: string;
 
     @HideField()
